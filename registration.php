@@ -23,15 +23,15 @@
         $_SESSION['error'] = "Sorry, there was an error uploading your file or the file is invalid.";
       } else {
 
-        $userId = $con->signupUser($firstname, $lastname, $birthday, $email, $sex, $phone, $username, $password, $profile_picture_path);
+        $user_id = $con->signupUser($firstname, $lastname, $birthday, $sex, $email, $phone, $username, $password, $profile_picture_path);
 
-        if ($userId) {
+        if ($user_id) {
           $street = $_POST['user_street'];
           $barangay = $_POST['user_barangay'];
           $city = $_POST['user_city'];
           $province = $_POST['user_province'];
 
-          if ($con->insertAddress($userId, $street, $barangay, $city, $province)) {
+          if ($con->insertAddress($user_id, $street, $barangay, $city, $province)) {
             $sweetAlertConfig = "
               <script>
                   Swal.fire({
