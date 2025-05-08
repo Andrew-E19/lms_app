@@ -23,9 +23,9 @@
         $_SESSION['error'] = "Sorry, there was an error uploading your file or the file is invalid.";
       } else {
 
-        $userID = $con->signupUser($firstname, $lastname, $birthday, $email, $sex, $phone, $username, $password, $profile_picture_path);
+        $userId = $con->signupUser($firstname, $lastname, $birthday, $email, $sex, $phone, $username, $password, $profile_picture_path);
 
-        if ($userID) {
+        if ($userId) {
           $street = $_POST['user_street'];
           $barangay = $_POST['user_barangay'];
           $city = $_POST['user_city'];
