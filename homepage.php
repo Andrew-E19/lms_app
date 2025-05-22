@@ -33,9 +33,9 @@
           </button>
         </li>
         <li>
-          <button class="dropdown-item text-danger" onclick="logout()">
-            <i class="bi bi-box-arrow-right me-2"></i> Logout
-          </button>
+                <a class="dropdown-item text-danger" href="logout.php">
+                  <i class="bi bi-box-arrow-right me-2"></i> Logout
+                </a>
         </li>
       </ul>
     </div>

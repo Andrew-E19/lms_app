@@ -32,6 +32,68 @@
             }
         }
 
+        function addAuthor($authorFirstName, $authorLastName, $authorBirthYear, $authorNationality) {
+            $con = $this->opencon();
+
+            try {
+                $con->beginTransaction();
+
+                $stmt = $con->prepare("INSERT INTO Authors (author_FN, author_LN, author_birthday, author_nat) VALUES (?, ?, ?, ?)");
+                $stmt->execute([$authorFirstName, $authorLastName, $authorBirthYear, $authorNationality]);
+
+                $author_id = $con->lastInsertId();
+
+                $con->commit();
+                return $author_id;
+            } catch (PDOException $e) {
+                $con->rollBack();
+                return false;
+            }
+        }
+
+        function addGenre($genreName) {
+            $con = $this->opencon();
+
+            try {
+                $con->beginTransaction();
+
+                $stmt = $con->prepare("INSERT INTO Genres (genre_name) VALUES (?)");
+                $stmt->execute([$genreName]);
+
+                $genre_id = $con->lastInsertId();
+
+                $con->commit();
+                return $genre_id;
+            } catch (PDOException $e) {
+                $con->rollBack();
+                return false;
+            }
+        }
+
+        function addBook($bookTitle, $bookISBN, $bookYear, $bookGenres, $bookQuantity) {
+            $con = $this->opencon();
+
+            try {
+                $con->beginTransaction();
+
+                $stmt = $con->prepare("INSERT INTO Books (book_title, book_isbn, book_pubyear, quantity_avail) VALUES (?, ?, ?, ?)");
+                $stmt->execute([$bookTitle, $bookISBN, $bookYear, $bookQuantity]);
+
+                $book_id = $con->lastInsertId();
+
+                foreach ($bookGenres as $genre_id) {
+                    $stmt = $con->prepare("INSERT INTO Books_Genres (book_id, genre_id) VALUES (?, ?)");
+                    $stmt->execute([$book_id, $genre_id]);
+                }
+
+                $con->commit();
+                return true;
+            } catch (PDOException $e) {
+                $con->rollBack();
+                return false;
+            }
+        }
+
         function insertAddress($user_id, $street, $barangay, $city, $province) {
             $con = $this->opencon();
 
@@ -54,6 +116,19 @@
             }
 
         }
+
+        function loginUser($email, $password) {
+            $con = $this->opencon();
+            $stmt = $con->prepare("SELECT * FROM Users WHERE user_email = ?");
+            $stmt->execute([$email]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                if ($user && password_verify($password, $user['user_password'])) {
+                    return $user;
+                } else {
+                    return false;
+                }
+        }
+
 
     }
 

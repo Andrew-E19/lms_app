@@ -2,8 +2,6 @@
 
     require_once('classes/database.php');
     require_once('classes/functions.php');
-    $con = new database();
-    $data = $con->opencon();
 
     $con = new database();
     $sweetAlertConfig = "";
@@ -41,7 +39,7 @@
                     confirmButtonText: 'OK'
                   }).then((result) => {
                     if (result.isConfirmed) {
-                      window.location.href = 'login.php';
+                      window.location.href = 'index.php';
                     }
                   });
               </script>";
@@ -132,6 +130,10 @@ if (!empty($sweetAlertConfig)) {
         </div>
       </div>
       <button type="button" id="nextButton" class="btn btn-primary mt-3" onclick="nextStep()">Next</button>
+      <div class="my-3 text-end">
+        <span>Already have an account?</span>
+        <a href="index.php" class="btn btn-link p-0 align-baseline"> Sign in!</a>
+      </div>
     </div>
 
     <!-- Step 2 -->
