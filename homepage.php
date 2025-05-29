@@ -1,3 +1,17 @@
+<?php
+
+session_start();
+
+// if (!isset($_SESSION['user_id'])) {
+//   header('Location: index.php');
+//   exit();
+// }
+
+require_once('classes/database.php');
+$con = new database();
+
+?>
+
 <!doctype html>
 <html lang="en">
 <head>

@@ -19,7 +19,7 @@
               text: 'Genre added successfully.',
               confirmButtonText: 'Continue'
             }).then(() => {
-              window.location.href = 'add_genres.php';
+              window.location.href = 'admin_homepage.php';
             });
           </script>";
       } else {

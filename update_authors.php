@@ -1,25 +1,34 @@
 <?php
 
-    require_once 'classes/database.php';
+require_once('classes/database.php');
+$con = new database();
+session_start();
 
-    $con = new database();
-    $sweetAlertConfig = "";
+if (empty($id = $_POST['id'])) {
+    header("Location: index.php");
+} else {
+  $id = $_POST['id'];
+  $data = $con->viewAuthorsID($id);
+}
 
-    if (isset($_POST['addAuthor'])) {
+$sweetAlertConfig = "";
+
+    if (isset($_POST['updateAuthor'])) {
+        $authorID = $_POST['id'];
         $authorFirstName = $_POST['authorFirstName'];
         $authorLastName = $_POST['authorLastName'];
         $authorBirthYear = $_POST['authorBirthYear'];
         $authorNationality = $_POST['authorNationality'];
 
-        $result = $con->addAuthor($authorFirstName, $authorLastName, $authorBirthYear, $authorNationality);
+        $result = $con->updateAuthor($authorID, $authorFirstName, $authorLastName, $authorBirthYear, $authorNationality);
 
         if ($result) {
           $sweetAlertConfig = "
             <script>
               Swal.fire({
                 icon: 'success',
-                title: 'Success',
-                text: 'Author added successfully.',
+                title: 'Update Success',
+                text: 'Author info upadated successfully.',
                 confirmButtonText: 'Continue'
               }).then(() => {
                 window.location.href = 'admin_homepage.php';
@@ -31,14 +40,13 @@
               Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Failed to add author.',
+                text: 'Failed to update author info.',
               });
             </script>";
         }
     }
 
 ?>
-
 
 <!doctype html>
 <html lang="en">
@@ -89,41 +97,37 @@
 <div class="container my-5 border border-2 rounded-3 shadow p-4 bg-light">
 
 
-  <h4 class="mt-5">Add New Author</h4>
+  <h4 class="mt-5">Update Existing Author</h4>
   <form method="POST" action="" novalidate>
+    <input type="hidden" name="id" value="<?php echo $data['author_id']; ?>">
     <div class="mb-3">
       <label for="authorFirstName" class="form-label">First Name</label>
-      <input type="text" class="form-control" name="authorFirstName" id="authorFirstName" required>
+      <input type="text" value="<?php echo $data['author_FN']?>" class="form-control" name="authorFirstName" id="authorFirstName" required>
     </div>
     <div class="mb-3">
       <label for="authorLastName" class="form-label">Last Name</label>
-      <input type="text" class="form-control" name="authorLastName" id="authorLastName" required>
+      <input type="text" value="<?php echo $data['author_LN']?>" class="form-control" name="authorLastName" id="authorLastName" required>
     </div>
     <div class="mb-3">
       <label for="authorBirthYear" class="form-label">Birth Date</label>
-      <input type="date" class="form-control" name="authorBirthYear" id="authorBirthYear" max="<?= date('Y-m-d') ?>" required>
+      <input type="date" value="<?php echo isset($data['author_birthday']) ? date('Y-m-d', strtotime($data['author_birthday'])) : ''; ?>" class="form-control" name="authorBirthYear" id="authorBirthYear" max="<?= date('Y-m-d') ?>" required>
     </div>
     <div class="mb-3">
       <label for="authorNationality" class="form-label">Nationality</label>
-      <select class="form-select" name="authorNationality" id="authorNationality" required>
-        <option value="" disabled selected>Select Nationality</option>
-        <option value="Filipino">Filipino</option>
-        <option value="American">American</option>
-        <option value="British">British</option>
-        <option value="Canadian">Canadian</option>
-        <option value="Chinese">Chinese</option>
-        <option value="French">French</option>
-        <option value="German">German</option>
-        <option value="Indian">Indian</option>
-        <option value="Japanese">Japanese</option>
-        <option value="Mexican">Mexican</option>
-        <option value="Russian">Russian</option>
-        <option value="South African">South African</option>
-        <option value="Spanish">Spanish</option>
-        <option value="Other">Other</option>
-      </select>
+    <select class="form-select" name="authorNationality" id="authorNationality" required>
+      <?php
+        $nationalities = [
+          "Filipino", "American", "British", "Canadian", "Chinese", "French",
+          "German", "Indian", "Japanese", "Mexican", "Russian", "South African", "Spanish", "Other"
+        ];
+        foreach ($nationalities as $nat) {
+          $selected = ($data['author_nat'] == $nat) ? 'selected' : '';
+          echo "<option value=\"$nat\" $selected>$nat</option>";
+        }
+      ?>
+    </select>
     </div>
-    <button type="submit" name="addAuthor" class="btn btn-primary">Add Author</button>
+    <button type="submit" name="updateAuthor" class="btn btn-primary">Update Author</button>
   </form>
   <?php echo $sweetAlertConfig; ?>
 </div>

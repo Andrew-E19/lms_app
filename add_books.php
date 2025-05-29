@@ -23,7 +23,7 @@ if (isset($_POST['addBooks'])) {
               text: 'Book added successfully.',
               confirmButtonText: 'Continue'
             }).then(() => {
-              window.location.href = 'add_books.php';
+              window.location.href = 'admin_homepage.php';
             });
           </script>";
     } else {

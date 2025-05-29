@@ -51,6 +51,23 @@
             }
         }
 
+        function updateAuthor($authorID, $authorFirstName, $authorLastName, $authorBirthYear, $authorNationality) {
+            $con = $this->opencon();
+
+            try {
+                $con->beginTransaction();
+
+                $stmt = $con->prepare("UPDATE Authors SET author_FN = ?, author_LN = ?, author_birthday = ?, author_nat = ? WHERE author_id = ?");
+                $stmt->execute([$authorFirstName, $authorLastName, $authorBirthYear, $authorNationality, $authorID]);
+
+                $con->commit();
+                return true;
+            } catch (PDOException $e) {
+                $con->rollBack();
+                return false;
+            }
+        }
+
         function addGenre($genreName) {
             $con = $this->opencon();
 
@@ -64,6 +81,23 @@
 
                 $con->commit();
                 return $genre_id;
+            } catch (PDOException $e) {
+                $con->rollBack();
+                return false;
+            }
+        }
+
+        function updateGenre($genreID, $genreName) {
+            $con = $this->opencon();
+
+            try {
+                $con->beginTransaction();
+
+                $stmt = $con->prepare("UPDATE Genres SET genre_name = ? WHERE genre_id = ?");
+                $stmt->execute([$genreName, $genreID]);
+
+                $con->commit();
+                return true;
             } catch (PDOException $e) {
                 $con->rollBack();
                 return false;
@@ -127,6 +161,30 @@
                 } else {
                     return false;
                 }
+        }
+
+        function viewAuthors() {
+            $con = $this->opencon();
+            return $con->query("SELECT * FROM Authors")->fetchAll();
+        }
+
+        function viewAuthorsID($id) {
+            $con = $this->opencon();
+            $stmt = $con->prepare("SELECT * FROM Authors WHERE author_id = ?");
+            $stmt->execute([$id]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+
+        function viewGenres() {
+            $con = $this->opencon();
+            return $con->query("SELECT * FROM Genres ORDER BY genre_id")->fetchAll();
+        }
+
+        function viewGenresID($id) {
+            $con = $this->opencon();
+            $stmt = $con->prepare("SELECT * FROM Genres WHERE genre_id = ?");
+            $stmt->execute([$id]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
         }
 
 
