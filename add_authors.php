@@ -1,7 +1,7 @@
 <?php
 
   session_start();
-  
+
 if (!isset($_SESSION['user_ID'])) {
   header('Location: index.php');
   exit();
@@ -28,8 +28,8 @@ if (!isset($_SESSION['user_ID'])) {
             <script>
               Swal.fire({
                 icon: 'success',
-                title: 'Success',
-                text: 'Author added successfully.',
+                title: 'Author added successfully',
+                text: 'A new author has been added to the database.',
                 confirmButtonText: 'Continue'
               }).then(() => {
                 window.location.href = 'admin_homepage.php';
@@ -40,8 +40,8 @@ if (!isset($_SESSION['user_ID'])) {
             <script>
               Swal.fire({
                 icon: 'error',
-                title: 'Error',
-                text: 'Failed to add author.',
+                title: 'Something went wrong',
+                text: 'Please try again.',
               });
             </script>";
         }

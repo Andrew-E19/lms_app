@@ -22,18 +22,19 @@ if (isset($_POST['addBooks'])) {
     $bookTitle = $_POST['bookTitle'];
     $bookISBN = $_POST['bookISBN'];
     $bookYear = $_POST['bookYear'];
-    $bookGenres = $_POST['bookGenres'];
     $bookQuantity = $_POST['bookQuantity'];
+    $genre_ids = isset($_POST['bookGenres']) ? $_POST['bookGenres'] : [];
+    $author_ids = isset($_POST['bookAuthors']) ? $_POST['bookAuthors'] : [];
 
-    $result = $con->addBook($bookTitle, $bookISBN, $bookYear, $bookGenres, $bookQuantity);
+    $result = $con->addBook($bookTitle, $bookISBN, $bookYear, $bookQuantity, $genre_ids, $author_ids);
 
     if ($result) {
         $sweetAlertConfig = "
           <script>
             Swal.fire({
               icon: 'success',
-              title: 'Success',
-              text: 'Book added successfully.',
+              title: 'Book added successfully',
+              text: 'A new book has been added to the library.',
               confirmButtonText: 'Continue'
             }).then(() => {
               window.location.href = 'admin_homepage.php';
@@ -44,8 +45,8 @@ if (isset($_POST['addBooks'])) {
           <script>
             Swal.fire({
               icon: 'error',
-              title: 'Error',
-              text: 'Failed to add book.',
+              title: 'Something went wrong',
+              text: 'Please try again.',
             });
           </script>";
     }

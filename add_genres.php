@@ -26,8 +26,8 @@ if (!isset($_SESSION['user_ID'])) {
           <script>
             Swal.fire({
               icon: 'success',
-              title: 'Success',
-              text: 'Genre added successfully.',
+              title: 'Genre added successfully',
+              text: 'A new genre has been added to the database.',
               confirmButtonText: 'Continue'
             }).then(() => {
               window.location.href = 'admin_homepage.php';
@@ -38,8 +38,8 @@ if (!isset($_SESSION['user_ID'])) {
           <script>
             Swal.fire({
               icon: 'error',
-              title: 'Error',
-              text: 'Failed to add genre.',
+              title: 'Something went wrong',
+              text: 'Please try again.',
             });
           </script>";
       }
