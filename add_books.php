@@ -1,9 +1,22 @@
 <?php
 
-require_once 'classes/database.php';
+  session_start();
+
+if (!isset($_SESSION['user_ID'])) {
+  header('Location: index.php');
+  exit();
+} else if ($_SESSION['user_type'] != 1) {
+  header('Location: homepage.php');
+  exit();
+}
+
+  require_once 'classes/database.php';
 
 $con = new database();
 $sweetAlertConfig = "";
+
+$genres = $con->viewGenres();
+$authors = $con->viewAuthors();
 
 if (isset($_POST['addBooks'])) {
     $bookTitle = $_POST['bookTitle'];
@@ -104,17 +117,25 @@ if (isset($_POST['addBooks'])) {
     </div>
     <div class="mb-3">
       <label for="bookGenres" class="form-label">Genres</label>
-      <select class="form-select" name="bookGenres" id="bookGenres" multiple required>
-        <option value="Fiction">Fiction</option>
-        <option value="Non-Fiction">Non-Fiction</option>
-        <option value="Science">Science</option>
-        <option value="History">History</option>
-        <option value="Biography">Biography</option>
-        <option value="Fantasy">Fantasy</option>
-        <option value="Mystery">Mystery</option>
+      <select class="form-select" name="bookGenres[]" id="bookGenres" multiple required>
+        <?php foreach ($genres as $genre): ?>
+          <option value="<?php echo $genre['genre_id'] ?>"><?php echo htmlspecialchars($genre['genre_name']); ?></option>
+        <?php endforeach; ?>
+        
         <!-- Add more genres as needed -->
       </select>
       <small class="form-text text-muted">Hold down the Ctrl (Windows) or Command (Mac) key to select multiple genres.</small>
+    </div>
+    <div class="mb-3">
+      <label for="bookAuthors" class="form-label">Authors</label>
+      <select class="form-select" name="bookAuthors[]" id="bookAuthors" multiple required>
+        <?php foreach ($authors as $author): ?>
+          <option value="<?php echo $author['author_id'] ?>"><?php echo htmlspecialchars($author['author_FN'] . ' ' . $author['author_LN']); ?></option>
+        <?php endforeach; ?>
+        
+        <!-- Add more genres as needed -->
+      </select>
+      <small class="form-text text-muted">Hold down the Ctrl (Windows) or Command (Mac) key to select multiple authors.</small>
     </div>
     <div class="mb-3">
       <label for="bookQuantity" class="form-label">Quantity Available</label>

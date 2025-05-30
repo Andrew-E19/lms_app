@@ -1,6 +1,16 @@
 <?php
 
-    require_once 'classes/database.php';
+  session_start();
+  
+if (!isset($_SESSION['user_ID'])) {
+  header('Location: index.php');
+  exit();
+} else if ($_SESSION['user_type'] != 1) {
+  header('Location: homepage.php');
+  exit();
+}
+
+  require_once 'classes/database.php';
 
     $con = new database();
     $sweetAlertConfig = "";

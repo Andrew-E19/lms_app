@@ -187,6 +187,18 @@
             return $stmt->fetch(PDO::FETCH_ASSOC);
         }
 
+        function viewBooks() {
+            $con = $this->opencon();
+            return $con->query("SELECT * FROM Books")->fetchAll();
+        }
+
+        function viewBooksID($id) {
+            $con = $this->opencon();
+            $stmt = $con->prepare("SELECT * FROM Books WHERE book_id = ?");
+            $stmt->execute([$id]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+
 
     }
 
