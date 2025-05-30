@@ -2,10 +2,13 @@
 
 session_start();
 
-// if (!isset($_SESSION['user_id'])) {
-//   header('Location: index.php');
-//   exit();
-// }
+if (!isset($_SESSION['user_ID'])) {
+  header('Location: index.php');
+  exit();
+} else if ($_SESSION['user_type'] != 1) {
+  header('Location: homepage.php');
+  exit();
+}
 
 require_once('classes/database.php');
 $con = new database();

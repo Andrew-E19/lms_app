@@ -2,6 +2,16 @@
 
 session_start();
 
+if (isset($_SESSION['user_ID'])) {
+  if ($_SESSION['user_type'] == 1) {
+    header('Location: admin_homepage.php');
+    exit();
+  } else {
+    header('Location: homepage.php');
+    exit();
+  }
+}
+
 require_once('classes/database.php');
 $con = new database();
 $sweetAlertConfig = "";
